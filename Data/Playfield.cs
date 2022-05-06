@@ -18,7 +18,7 @@ namespace gameOfLife.Data
 
         public void AddChunk(int x, int y)
         {
-            this.chunkGrid[x,y] = new Chunk();
+            this.chunkGrid[x,y] = new Chunk(this);
         }
         public Chunk GetChunk(int x, int y)
         {

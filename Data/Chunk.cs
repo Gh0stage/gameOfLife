@@ -8,11 +8,16 @@ namespace gameOfLife.Data
 {
     internal class Chunk
     {
-        private List<LiveNode> activeCells = new List<LiveNode>();
-        public const int SIZE = 50;
+        public Chunk(Playfield playfield)
+        {
+            this.playField = playfield;
+        }
         
+        private List<LiveNode> activeCells = new List<LiveNode>();
+        private Playield playField;
+        public const int SIZE = 50;
         public Coordinate RootCoord { get; internal set; }
-
+        public Playfield PlayField { get; set; }
         public List<LiveNode> GetActiveCells() {
             return activeCells;
         }

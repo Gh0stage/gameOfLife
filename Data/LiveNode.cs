@@ -124,9 +124,9 @@ namespace gameOfLife.Data
 
         public int UpdateNeighbours()
         {
+            int _xNeighbours = 0;
             if (!isOnBorder)
             {
-                int _xNeighbours = 0;
                 if (chunk.GetActiveCells().Contains(new LiveNode(Location.X - 1, Location.Y, chunk))) _xNeighbours++;
                 if (chunk.GetActiveCells().Contains(new LiveNode(Location.X + 1, Location.Y, chunk))) _xNeighbours++;
                 if (chunk.GetActiveCells().Contains(new LiveNode(Location.X, Location.Y - 1, chunk))) _xNeighbours++;
@@ -146,12 +146,38 @@ namespace gameOfLife.Data
                         {
                             case 0:
                                 //bottom left corner
+                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X + 1, Location.Y, chunk))) _xNeighbours++;
+                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X, Location.Y + 1, chunk))) _xNeighbours++;
+                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X + 1, Location.Y + 1, chunk))) _xNeighbours++;
+                                //parts from other chunks
+                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X - 1, chunk.RootCoord.Y].GetActiveCells().Contains(new LiveNode(Chunk.SIZE - 1, 0, chunk.PlayField.chunkGrid[chunk.RootCoord.X - 1, chunk.RootCoord.Y]))) _xNeighbours++;
+                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y - 1].GetActiveCells().Contains(new LiveNode(0, Chunk.SIZE - 1, chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y - 1]))) _xNeighbours++;
+                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y].GetActiveCells().Contains(new LiveNode(Chunk.SIZE - 1, Chunk.SIZE - 1, chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y]))) _xNeighbours++;
+                                return _xNeighbours;
                                 break;
                             case Chunk.SIZE - 1:
                                 //top left corner
+                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X + 1, Location.Y, chunk))) _xNeighbours++;
+                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X, Location.Y - 1, chunk))) _xNeighbours++;
+                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X + 1, Location.Y - 1, chunk))) _xNeighbours++;
+                                //parts from other chunks
+                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X - 1, chunk.RootCoord.Y].GetActiveCells().Contains(new LiveNode(Chunk.SIZE - 1, 0, chunk.PlayField.chunkGrid[chunk.RootCoord.X - 1, chunk.RootCoord.Y]))) _xNeighbours++;
+                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y - 1].GetActiveCells().Contains(new LiveNode(0, Chunk.SIZE - 1, chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y - 1]))) _xNeighbours++;
+                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y].GetActiveCells().Contains(new LiveNode(Chunk.SIZE - 1, Chunk.SIZE - 1, chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y]))) _xNeighbours++;
+                                return _xNeighbours;
                                 break;
                             default:
                                 //left side
+                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X + 1, Location.Y, chunk))) _xNeighbours++;
+                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X, Location.Y - 1, chunk))) _xNeighbours++;
+                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X, Location.Y + 1, chunk))) _xNeighbours++;
+                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X + 1, Location.Y - 1, chunk))) _xNeighbours++;
+                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X + 1, Location.Y + 1, chunk))) _xNeighbours++;
+                                //parts from other chunks
+                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X - 1, chunk.RootCoord.Y].GetActiveCells().Contains(new LiveNode(Chunk.SIZE - 1, 0, chunk.PlayField.chunkGrid[chunk.RootCoord.X - 1, chunk.RootCoord.Y]))) _xNeighbours++;
+                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y - 1].GetActiveCells().Contains(new LiveNode(0, Chunk.SIZE - 1, chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y - 1]))) _xNeighbours++;
+                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y].GetActiveCells().Contains(new LiveNode(Chunk.SIZE - 1, Chunk.SIZE - 1, chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y]))) _xNeighbours++;
+                                return _xNeighbours;
                                 break;
                         }
                         break;
@@ -161,14 +187,44 @@ namespace gameOfLife.Data
                         {
                             case 0:
                                 //bottom right corner
+                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X - 1, Location.Y, chunk))) _xNeighbours++;
+                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X, Location.Y + 1, chunk))) _xNeighbours++;
+                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X - 1, Location.Y + 1, chunk))) _xNeighbours++;
+                                //parts from other chunks
+                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X + 1, chunk.RootCoord.Y].GetActiveCells().Contains(new LiveNode(0, 0, chunk.PlayField.chunkGrid[chunk.RootCoord.X + 1, chunk.RootCoord.Y]))) _xNeighbours++;
+                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y + 1].GetActiveCells().Contains(new LiveNode(Chunk.SIZE - 1, 0, chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y + 1]))) _xNeighbours++;
+                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y].GetActiveCells().Contains(new LiveNode(Chunk.SIZE - 1, Chunk.SIZE - 1, chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y]))) _xNeighbours++;
+                                return _xNeighbours;
                                 break;
                             case Chunk.SIZE - 1:
                                 //top right corner
+                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X - 1, Location.Y, chunk))) _xNeighbours++;
+                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X, Location.Y - 1, chunk))) _xNeighbours++;
+                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X - 1, Location.Y - 1, chunk))) _xNeighbours++;
+                                //parts from other chunks
+                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X + 1, chunk.RootCoord.Y].GetActiveCells().Contains(new LiveNode(0, 0, chunk.PlayField.chunkGrid[chunk.RootCoord.X + 1, chunk.RootCoord.Y]))) _xNeighbours++;
+                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y - 1].GetActiveCells().Contains(new LiveNode(Chunk.SIZE - 1, 0, chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y - 1]))) _xNeighbours++;
+                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y].GetActiveCells().Contains(new LiveNode(Chunk.SIZE - 1, Chunk.SIZE - 1, chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y]))) _xNeighbours++;
+                                return _xNeighbours;
                                 break;
                             default:
                                 //right side
+                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X - 1, Location.Y, chunk))) _xNeighbours++;
+                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X, Location.Y - 1, chunk))) _xNeighbours++;
+                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X, Location.Y + 1, chunk))) _xNeighbours++;
+                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X - 1, Location.Y - 1, chunk))) _xNeighbours++;
+                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X - 1, Location.Y + 1, chunk))) _xNeighbours++;
+                                //parts from other chunks
+                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X + 1, chunk.RootCoord.Y].GetActiveCells().Contains(new LiveNode(0, 0, chunk.PlayField.chunkGrid[chunk.RootCoord.X + 1, chunk.RootCoord.Y]))) _xNeighbours++;
+                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y - 1].GetActiveCells().Contains(new LiveNode(Chunk.SIZE - 1, 0, chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y - 1]))) _xNeighbours++;
+                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y].GetActiveCells().Contains(new LiveNode(Chunk.SIZE - 1, Chunk.SIZE - 1, chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y]))) _xNeighbours++;
+                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y + 1].GetActiveCells().Contains(new LiveNode(Chunk.SIZE - 1, Chunk.SIZE - 1, chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y + 1]))) _xNeighbours++;
+                                return _xNeighbours;
                                 break;
                         }
+                        break;
+                    default:
+                        throw new Exception("isOnBorder is true, but not on a border");
                         break;
                 }
             }
