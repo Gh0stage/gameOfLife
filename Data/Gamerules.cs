@@ -26,16 +26,30 @@ namespace gameOfLife.Data
             }
             else return false;
         }
-            
+
         internal bool isUnderpopulated(LiveNode cell)
         {
-            int x = cell.X;
+            int x = cell.Location.X;
             return true;
         }
 
         internal static void UpdatePlayfield()
         {
-           
+            for (int i = 0; i < Playfield.Width; i++)
+            {
+                for (int j = 0; j < Playfield.Height; j++)
+                {
+                    Chunk currentChunk = Playfield.chunkGrid[i, j];
+                    if (currentChunk != null)
+                    {
+                        for (int k = 0; k < currentChunk.GetActiveCells().Count; k++)
+                        {
+                            LiveNode currentCell = currentChunk.GetActiveCells()[k];
+
+                        }
+                    }
+                }
+            }
         }
     }
 }
