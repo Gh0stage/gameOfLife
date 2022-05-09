@@ -27,7 +27,7 @@
         {
             if (isRunning)
             {
-                Gamerules.UpdatePlayfield();
+                playField.Update();
             }
         }
     }

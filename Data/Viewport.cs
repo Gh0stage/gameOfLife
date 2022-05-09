@@ -6,8 +6,8 @@
         public List<Chunk> LoadedChunks { get; set; }
         public int canvasSizeX;
         public int canvasSizeY;
-        public Coordinate viewportCoordLB = new Coordinate(0, 0);
-        public Coordinate viewportCoordRA = new Coordinate(100, 100);
+        public Coordinate viewportCoordLB = new Coordinate(null, 0, 0);
+        public Coordinate viewportCoordRA = new Coordinate(null, 100, 100);
 
 
 
@@ -35,8 +35,8 @@
         {
             foreach (Chunk chunk in Viewport.Playfield.chunkGrid)
             {
-                Coordinate viewportCoordLA = new Coordinate(viewportCoordLB.X, viewportCoordRA.Y);
-                Coordinate viewportCoordRB = new Coordinate(viewportCoordRA.X, viewportCoordLB.Y);
+                Coordinate viewportCoordLA = new Coordinate(null, viewportCoordLB.X, viewportCoordRA.Y);
+                Coordinate viewportCoordRB = new Coordinate(null, viewportCoordRA.X, viewportCoordLB.Y);
                 if (cornerCheck(viewportCoordLB) || cornerCheck(viewportCoordRA) || cornerCheck(viewportCoordLA) || cornerCheck(viewportCoordRB))
                 {
                     if (!LoadedChunks.Contains(chunk))

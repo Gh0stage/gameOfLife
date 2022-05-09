@@ -8,45 +8,40 @@ namespace gameOfLife.Data
 {
     internal class Playfield
     {
-        public static Chunk[,] chunkGrid = new Chunk[3, 3];
-        public int width= 3;
-        public int height = 3;
-        private  const int EXPANDMODIFIER = 2;
-
-        public static int Width { get; internal set; }
-        public static int Height { get; internal set; }
+        public Chunk[,] chunkGrid = new Chunk[3, 3];
+        private const int EXPANDMODIFIER = 2;
 
         public Playfield()
         {
-            Playfield.chunkGrid = new Chunk[3, 3];
+            this.chunkGrid = new Chunk[3, 3];
         }
 
         public void AddChunk(int x, int y)
         {
-            Playfield.chunkGrid[x,y] = new Chunk(this);
+            this.chunkGrid[x, y] = new Chunk(this);
         }
         public Chunk GetChunk(int x, int y)
         {
-            return Playfield.chunkGrid[x, y];
+            return this.chunkGrid[x, y];
         }
 
         public void RemoveChunk(int x, int y)
         {
-            Playfield.chunkGrid[x, y] = null;
+            this.chunkGrid[x, y] = null;
         }
 
         public void ExpandGrid(string direction)
         {
-            Chunk[,] newGrid;
-            switch (direction) {
+            Chunk[,] newGrid = new Chunk[1, 1];
+            switch (direction)
+            {
                 case "up":
-                    newGrid = new Chunk[Playfield.chunkGrid.GetLength(0), Playfield.chunkGrid.GetLength(1) + EXPANDMODIFIER];
-                    height += EXPANDMODIFIER;
-                    for (int x = 0; x < Playfield.chunkGrid.GetLength(0); x++)
+                    newGrid = new Chunk[this.chunkGrid.GetLength(0), this.chunkGrid.GetLength(1) + EXPANDMODIFIER];
+                    for (int x = 0; x < this.chunkGrid.GetLength(0); x++)
                     {
-                        for(int y = 0; y < Playfield.chunkGrid.GetLength(1); y++)
+                        for (int y = 0; y < this.chunkGrid.GetLength(1); y++)
                         {
-                            Chunk loadedChunk = Playfield.chunkGrid[x, y];
+                            Chunk loadedChunk = this.chunkGrid[x, y];
                             if (loadedChunk != null)
                             {
                                 newGrid[x, y] = loadedChunk;
@@ -58,18 +53,17 @@ namespace gameOfLife.Data
                         }
                     }
                     break;
-                    
+
                 case "down":
-                    newGrid = new Chunk[Playfield.chunkGrid.GetLength(0), Playfield.chunkGrid.GetLength(1) + EXPANDMODIFIER];
-                    height += EXPANDMODIFIER;
-                    for (int x = 0; x < Playfield.chunkGrid.GetLength(0); x++)
+                    newGrid = new Chunk[this.chunkGrid.GetLength(0), this.chunkGrid.GetLength(1) + EXPANDMODIFIER];
+                    for (int x = 0; x < this.chunkGrid.GetLength(0); x++)
                     {
-                        for(int y = 0; y < Playfield.chunkGrid.GetLength(1); y++)
+                        for (int y = 0; y < this.chunkGrid.GetLength(1); y++)
                         {
-                            Chunk loadedChunk = Playfield.chunkGrid[x, y];
+                            Chunk loadedChunk = this.chunkGrid[x, y];
                             if (loadedChunk != null)
                             {
-                                newGrid[x, y+EXPANDMODIFIER] = loadedChunk;
+                                newGrid[x, y + EXPANDMODIFIER] = loadedChunk;
                             }
                             else
                             {
@@ -79,16 +73,15 @@ namespace gameOfLife.Data
                     }
                     break;
                 case "left":
-                    newGrid = new Chunk[Playfield.chunkGrid.GetLength(0)+EXPANDMODIFIER, Playfield.chunkGrid.GetLength(1)];
-                    width += EXPANDMODIFIER;
-                    for (int x = 0; x < Playfield.chunkGrid.GetLength(0); x++)
+                    newGrid = new Chunk[this.chunkGrid.GetLength(0) + EXPANDMODIFIER, this.chunkGrid.GetLength(1)];
+                    for (int x = 0; x < this.chunkGrid.GetLength(0); x++)
                     {
-                        for (int y = 0; y < Playfield.chunkGrid.GetLength(1); y++)
+                        for (int y = 0; y < this.chunkGrid.GetLength(1); y++)
                         {
-                            Chunk loadedChunk = Playfield.chunkGrid[x, y];
+                            Chunk loadedChunk = this.chunkGrid[x, y];
                             if (loadedChunk != null)
                             {
-                                newGrid[x+EXPANDMODIFIER, y] = loadedChunk;
+                                newGrid[x + EXPANDMODIFIER, y] = loadedChunk;
                             }
                             else
                             {
@@ -98,13 +91,12 @@ namespace gameOfLife.Data
                     }
                     break;
                 case "right":
-                    newGrid = new Chunk[Playfield.chunkGrid.GetLength(0) + EXPANDMODIFIER, Playfield.chunkGrid.GetLength(1)];
-                    width += EXPANDMODIFIER;
-                    for (int x = 0; x < Playfield.chunkGrid.GetLength(0); x++)
+                    newGrid = new Chunk[this.chunkGrid.GetLength(0) + EXPANDMODIFIER, this.chunkGrid.GetLength(1)];
+                    for (int x = 0; x < this.chunkGrid.GetLength(0); x++)
                     {
-                        for (int y = 0; y < Playfield.chunkGrid.GetLength(1); y++)
+                        for (int y = 0; y < this.chunkGrid.GetLength(1); y++)
                         {
-                            Chunk loadedChunk = Playfield.chunkGrid[x, y];
+                            Chunk loadedChunk = this.chunkGrid[x, y];
                             if (loadedChunk != null)
                             {
                                 newGrid[x, y] = loadedChunk;
@@ -119,6 +111,58 @@ namespace gameOfLife.Data
                 default:
                     break;
             }
+            chunkGrid = newGrid;
         }
-    } 
+
+        public void Update()
+        {
+            Chunk[,] newGrid;
+            List<Coordinate> coordsToUpdate = new List<Coordinate>();
+            List<Chunk> activeChunks = new List<Chunk>();
+
+
+            for (int x = 0; x < this.chunkGrid.GetLength(0); x++)
+            {
+                for (int y = 0; y < this.chunkGrid.GetLength(1); y++)
+                {
+                    Chunk loadedChunk = this.chunkGrid[x, y];
+                    if (loadedChunk != null)
+                    {
+                        Gamerules.CheckPlayfieldBorder(this, chunkGrid, loadedChunk);
+                        activeChunks.Add(loadedChunk);
+
+                        foreach (Chunk chunk in loadedChunk.GetNeighbours())
+                        {
+                            if (!activeChunks.Contains(chunk))
+                                activeChunks.Add(chunk);
+                        }
+
+                        foreach (LiveNode cell in loadedChunk.GetActiveCells())
+                        {
+                            Coordinate coord = cell.Location;
+                            if (!coordsToUpdate.Contains(coord)) coordsToUpdate.Add(coord);
+                            foreach (Coordinate neighbor in coord.GetNeighbours())
+                            {
+                                if (!coordsToUpdate.Contains(neighbor))
+                                    coordsToUpdate.Add(neighbor);
+                            }
+                        }
+                    }
+                }
+            }
+
+            newGrid = new Chunk[this.chunkGrid.GetLength(0), this.chunkGrid.GetLength(1)];
+
+            foreach (Chunk chunk in activeChunks)
+            {
+                Chunk newChunk = new Chunk(this);
+                newGrid[chunk.RootCoord.X, chunk.RootCoord.Y] = newChunk;
+            }
+            foreach (Coordinate coord in coordsToUpdate)
+            {
+                if (Gamerules.IsAlive(coord))
+                    newGrid[coord.chunk.RootCoord.X, coord.chunk.RootCoord.Y].GetActiveCells().Add(new LiveNode(coord, newGrid[coord.chunk.RootCoord.X, coord.chunk.RootCoord.Y]));
+            }
+        }
+    }
 }

@@ -9,45 +9,74 @@ namespace gameOfLife.Data
     internal class Gamerules
     {
 
-        public static bool IsAlive(LiveNode cell)
+        public static bool IsAlive(Coordinate coord)
         {
-            int aliveNeighbors = cell.XNeighbours;
-            if (aliveNeighbors < 2)
+            switch (coord.chunk.GetCell(coord.X, coord.Y))
             {
-                return false;
-            }
-            else if (aliveNeighbors == 2 || aliveNeighbors == 3)
-            {
-                return true;
-            }
-            else if (aliveNeighbors > 3)
-            {
-                return false;
-            }
-            else return false;
-        }
-
-        internal bool isUnderpopulated(LiveNode cell)
-        {
-            int x = cell.Location.X;
-            return true;
-        }
-
-        internal static void UpdatePlayfield()
-        {
-            for (int i = 0; i < Playfield.Width; i++)
-            {
-                for (int j = 0; j < Playfield.Height; j++)
-                {
-                    Chunk currentChunk = Playfield.chunkGrid[i, j];
-                    if (currentChunk != null)
+                case null:
                     {
-                        for (int k = 0; k < currentChunk.GetActiveCells().Count; k++)
-                        {
-                            LiveNode currentCell = currentChunk.GetActiveCells()[k];
-
-                        }
+                        LiveNode tempcell = new LiveNode(coord.X, coord.Y, coord.chunk);
+                        int xNeighbours = tempcell.XNeighbours;
+                        if (xNeighbours == 3)
+                            return true;
+                        else return false;
                     }
+                default:
+                    {
+                        int aliveNeighbors = coord.chunk.GetCell(coord.X, coord.Y).XNeighbours;
+                        if (aliveNeighbors < 2)
+                            return false;
+                        else if (aliveNeighbors == 2 || aliveNeighbors == 3)
+                            return true;
+                        else if (aliveNeighbors > 3)
+                            return false;
+                        else return false;
+                    }
+            }
+        }
+        public static void CheckPlayfieldBorder(Playfield playField, Chunk[,] chunkGrid, Chunk loadedChunk)
+        {
+            if (loadedChunk.RootCoord.X + 2 >= chunkGrid.GetLength(0))
+            {
+                playField.ExpandGrid("right");
+            }
+            if (loadedChunk.RootCoord.Y + 2 >= chunkGrid.GetLength(1))
+            {
+                playField.ExpandGrid("down");
+            }
+            if (loadedChunk.RootCoord.X - 2 < 0)
+            {
+                playField.ExpandGrid("left");
+            }
+            if (loadedChunk.RootCoord.Y - 2 < 0)
+            {
+                playField.ExpandGrid("up");
+            }
+        }
+
+        static void UpdateChunk(Playfield playfield, Chunk[,] chunkGrid, Chunk loadedChunk)
+        {
+            Chunk newChunk = new Chunk(playfield);
+            newChunk.RootCoord = loadedChunk.RootCoord;
+            List<Coordinate> coordsToUpdate = new List<Coordinate>();
+
+            foreach (LiveNode cell in loadedChunk.GetActiveCells())
+            {
+                Coordinate coord = cell.Location;
+                if (!coordsToUpdate.Contains(coord)) coordsToUpdate.Add(coord);
+                foreach (Coordinate neighbor in coord.GetNeighbours())
+                {
+                    if (!coordsToUpdate.Contains(neighbor)) coordsToUpdate.Add(neighbor);
+                }
+            }
+
+            for (int x = 0; x < loadedChunk.GetActiveCells().Count(); x++)
+            {
+                LiveNode cell = loadedChunk.GetActiveCells()[x];
+
+                if (IsAlive(cell.Location))
+                {
+                    newChunk.GetActiveCells().Add(cell);
                 }
             }
         }

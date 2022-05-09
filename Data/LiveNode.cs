@@ -22,26 +22,23 @@ namespace gameOfLife.Data
 
         public LiveNode(int x, int y, Chunk chunk)
         {
-            this.Location = new Coordinate(x, y);
+            this.Location = new Coordinate(chunk, x, y);
             this.chunk = chunk;
+        }
 
+        public LiveNode(Coordinate location, Chunk chunk)
+        {
+            this.Location = location;
+            this.chunk = chunk;
         }
 
         public int XNeighbours
         {
             get
             {
-                if (!isOnBorder)
-                {
-
-                }
-                else
-                {
-
-                }
+                xNeighbours = Location.GetNeighbours().Count;
                 return xNeighbours;
             }
-            set { xNeighbours = value; }
         }
 
         /*public string IsOnBorder
@@ -52,7 +49,7 @@ namespace gameOfLife.Data
                 bool leftborder;
                 bool rightborder;
                 bool belowborder;
-
+        
                 
                 // Ik heb toch een if statement gebruitk omdat we meerdere parameters moeten vergelijken. Ik zou niet weten hoe je dit met een case moet doen.
                 // Misschien moeten we geen bool prop maken, maar een string prop zoda we letterlijk kunnen returne in tekst wat er precies moet gebeuren.
@@ -104,130 +101,6 @@ namespace gameOfLife.Data
                 }
         }*/
 
-
-
-        public bool IsOnBorder
-        {
-            get {
-                if (Location.X == 0 || Location.X == Chunk.SIZE - 1 || Location.Y == 0 || Location.Y == Chunk.SIZE - 1)
-                {
-                    isOnBorder = true;
-                    return true;
-                }
-                else
-                {
-                    isOnBorder = false;
-                    return false;
-                }
-            }
-        }
-
-        public int UpdateNeighbours()
-        {
-            int _xNeighbours = 0;
-            if (!isOnBorder)
-            {
-                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X - 1, Location.Y, chunk))) _xNeighbours++;
-                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X + 1, Location.Y, chunk))) _xNeighbours++;
-                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X, Location.Y - 1, chunk))) _xNeighbours++;
-                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X, Location.Y + 1, chunk))) _xNeighbours++;
-                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X - 1, Location.Y - 1, chunk))) _xNeighbours++;
-                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X + 1, Location.Y - 1, chunk))) _xNeighbours++;
-                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X - 1, Location.Y + 1, chunk))) _xNeighbours++;
-                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X + 1, Location.Y + 1, chunk))) _xNeighbours++;
-                return _xNeighbours;
-            }
-            else
-            {
-                switch (Location.X)
-                {
-                    case 0:
-                        switch (Location.Y)
-                        {
-                            case 0:
-                                //bottom left corner
-                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X + 1, Location.Y, chunk))) _xNeighbours++;
-                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X, Location.Y + 1, chunk))) _xNeighbours++;
-                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X + 1, Location.Y + 1, chunk))) _xNeighbours++;
-                                //parts from other chunks
-                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X - 1, chunk.RootCoord.Y].GetActiveCells().Contains(new LiveNode(Chunk.SIZE - 1, 0, chunk.PlayField.chunkGrid[chunk.RootCoord.X - 1, chunk.RootCoord.Y]))) _xNeighbours++;
-                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y - 1].GetActiveCells().Contains(new LiveNode(0, Chunk.SIZE - 1, chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y - 1]))) _xNeighbours++;
-                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y].GetActiveCells().Contains(new LiveNode(Chunk.SIZE - 1, Chunk.SIZE - 1, chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y]))) _xNeighbours++;
-                                return _xNeighbours;
-
-                            case Chunk.SIZE - 1:
-                                //top left corner
-                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X + 1, Location.Y, chunk))) _xNeighbours++;
-                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X, Location.Y - 1, chunk))) _xNeighbours++;
-                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X + 1, Location.Y - 1, chunk))) _xNeighbours++;
-                                //parts from other chunks
-                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X - 1, chunk.RootCoord.Y].GetActiveCells().Contains(new LiveNode(Chunk.SIZE - 1, 0, chunk.PlayField.chunkGrid[chunk.RootCoord.X - 1, chunk.RootCoord.Y]))) _xNeighbours++;
-                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y - 1].GetActiveCells().Contains(new LiveNode(0, Chunk.SIZE - 1, chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y - 1]))) _xNeighbours++;
-                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y].GetActiveCells().Contains(new LiveNode(Chunk.SIZE - 1, Chunk.SIZE - 1, chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y]))) _xNeighbours++;
-                                return _xNeighbours;
-
-                            default:
-                                //left side
-                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X + 1, Location.Y, chunk))) _xNeighbours++;
-                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X, Location.Y - 1, chunk))) _xNeighbours++;
-                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X, Location.Y + 1, chunk))) _xNeighbours++;
-                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X + 1, Location.Y - 1, chunk))) _xNeighbours++;
-                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X + 1, Location.Y + 1, chunk))) _xNeighbours++;
-                                //parts from other chunks
-                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X - 1, chunk.RootCoord.Y].GetActiveCells().Contains(new LiveNode(Chunk.SIZE - 1, 0, chunk.PlayField.chunkGrid[chunk.RootCoord.X - 1, chunk.RootCoord.Y]))) _xNeighbours++;
-                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y - 1].GetActiveCells().Contains(new LiveNode(0, Chunk.SIZE - 1, chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y - 1]))) _xNeighbours++;
-                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y].GetActiveCells().Contains(new LiveNode(Chunk.SIZE - 1, Chunk.SIZE - 1, chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y]))) _xNeighbours++;
-                                return _xNeighbours;
-                        }
-
-
-                    case Chunk.SIZE - 1:
-                        switch (Location.Y)
-                        {
-                            case 0:
-                                //bottom right corner
-                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X - 1, Location.Y, chunk))) _xNeighbours++;
-                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X, Location.Y + 1, chunk))) _xNeighbours++;
-                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X - 1, Location.Y + 1, chunk))) _xNeighbours++;
-                                //parts from other chunks
-                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X + 1, chunk.RootCoord.Y].GetActiveCells().Contains(new LiveNode(0, 0, chunk.PlayField.chunkGrid[chunk.RootCoord.X + 1, chunk.RootCoord.Y]))) _xNeighbours++;
-                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y + 1].GetActiveCells().Contains(new LiveNode(Chunk.SIZE - 1, 0, chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y + 1]))) _xNeighbours++;
-                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y].GetActiveCells().Contains(new LiveNode(Chunk.SIZE - 1, Chunk.SIZE - 1, chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y]))) _xNeighbours++;
-                                return _xNeighbours;
-
-                            case Chunk.SIZE - 1:
-                                //top right corner
-                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X - 1, Location.Y, chunk))) _xNeighbours++;
-                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X, Location.Y - 1, chunk))) _xNeighbours++;
-                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X - 1, Location.Y - 1, chunk))) _xNeighbours++;
-                                //parts from other chunks
-                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X + 1, chunk.RootCoord.Y].GetActiveCells().Contains(new LiveNode(0, 0, chunk.PlayField.chunkGrid[chunk.RootCoord.X + 1, chunk.RootCoord.Y]))) _xNeighbours++;
-                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y - 1].GetActiveCells().Contains(new LiveNode(Chunk.SIZE - 1, 0, chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y - 1]))) _xNeighbours++;
-                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y].GetActiveCells().Contains(new LiveNode(Chunk.SIZE - 1, Chunk.SIZE - 1, chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y]))) _xNeighbours++;
-                                return _xNeighbours;
-
-                            default:
-                                //right side
-                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X - 1, Location.Y, chunk))) _xNeighbours++;
-                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X, Location.Y - 1, chunk))) _xNeighbours++;
-                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X, Location.Y + 1, chunk))) _xNeighbours++;
-                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X - 1, Location.Y - 1, chunk))) _xNeighbours++;
-                                if (chunk.GetActiveCells().Contains(new LiveNode(Location.X - 1, Location.Y + 1, chunk))) _xNeighbours++;
-                                //parts from other chunks
-                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X + 1, chunk.RootCoord.Y].GetActiveCells().Contains(new LiveNode(0, 0, chunk.PlayField.chunkGrid[chunk.RootCoord.X + 1, chunk.RootCoord.Y]))) _xNeighbours++;
-                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y - 1].GetActiveCells().Contains(new LiveNode(Chunk.SIZE - 1, 0, chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y - 1]))) _xNeighbours++;
-                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y].GetActiveCells().Contains(new LiveNode(Chunk.SIZE - 1, Chunk.SIZE - 1, chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y]))) _xNeighbours++;
-                                if (chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y + 1].GetActiveCells().Contains(new LiveNode(Chunk.SIZE - 1, Chunk.SIZE - 1, chunk.PlayField.chunkGrid[chunk.RootCoord.X, chunk.RootCoord.Y + 1]))) _xNeighbours++;
-                                return _xNeighbours;
-
-                        }
-
-                    default:
-                        throw new Exception("isOnBorder is true, but not on a border");
-
-                }
-            }
-        }      
     }
 }
 
