@@ -53,5 +53,10 @@
                 }
             }
         }
+
+        internal void Update()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

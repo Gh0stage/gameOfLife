@@ -3,7 +3,9 @@
     //This class is used to store the data of the game and is used to implement the game logic.
     internal class Game
     {
-        private static bool isRunning;
+
+        //Global variables which can be changed from frontend
+        private static bool isRunning; //   indicates if the game is running
         private static bool isInteractable;
 
         private static double zoomModifier;
@@ -28,6 +30,7 @@
             if (isRunning)
             {
                 playField.Update();
+                viewPort.Update();
             }
         }
     }

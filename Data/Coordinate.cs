@@ -8,40 +8,21 @@ namespace gameOfLife.Data
 {
     internal class Coordinate
     {
+        //variables
         public int X { get; set; }
         public int Y { get; set; }
         public Chunk chunk;
         private bool isOnBorder;
         public int xNeighbours = 0;
 
+
+        //constructor
         public Coordinate(Chunk chunk, int x, int y)
         {
             this.chunk = chunk;
-            MoveCoord(x,y);
-        }
-        public void MoveCoord(int x, int y)
-        {
             this.X = x;
             this.Y = y;
-        }
-
-        public bool IsOnBorder
-        {
-            get
-            {
-                if (this.X == 0 || this.X == Chunk.SIZE - 1 || this.Y == 0 || this.Y == Chunk.SIZE - 1)
-                {
-                    isOnBorder = true;
-                    return true;
-                }
-                else
-                {
-                    isOnBorder = false;
-                    return false;
-                }
-            }
-        }
-            
+        }            
 
         public List<Coordinate> GetNeighbours()
         {
@@ -52,6 +33,7 @@ namespace gameOfLife.Data
                     neighbours.Add(new Coordinate(chunk, this.X - 1, this.Y));
                     xNeighbours++;
                 }
+                
                 if (chunk.GetActiveCells().Contains(new LiveNode(this.X + 1, this.Y, chunk)))
                 {
                     neighbours.Add(new Coordinate(chunk, this.X + 1, this.Y));
@@ -315,5 +297,8 @@ namespace gameOfLife.Data
             }
         }
 
+
     }
+
+  
 }
