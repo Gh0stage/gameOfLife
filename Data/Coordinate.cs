@@ -85,6 +85,7 @@ namespace gameOfLife.Data
                                     neighbours.Add(new Coordinate(chunk, this.X, this.Y + 1));
                                     xNeighbours++;
                                 }
+                                
                                 if (chunk.GetActiveCells().Contains(new LiveNode(this.X + 1, this.Y + 1, chunk)))
                                 {
                                     neighbours.Add(new Coordinate(chunk, this.X + 1, this.Y + 1));

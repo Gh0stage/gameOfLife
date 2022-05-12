@@ -4,15 +4,16 @@
     {
         public static Playfield Playfield { get; set; }
         public List<Chunk> LoadedChunks { get; set; }
-        public int canvasSizeX;
-        public int canvasSizeY;
-        public Coordinate viewportCoordLB = new Coordinate(null, 0, 0);
-        public Coordinate viewportCoordRA = new Coordinate(null, 100, 100);
+        public int canvasSizeX = 300;
+        public int canvasSizeY = 600;
+        public Coordinate viewportCoordLB = new Coordinate(Playfield.chunkGrid[0,0], 0, 0);
+        public Coordinate viewportCoordRA = new Coordinate(null, 0, 0);
+        public LiveNode[,] canvas = new LiveNode[,] { };
 
-
+        
 
         public const int BUFFERSIZE = 2;
-
+        
         public Viewport(Playfield playfield)
         {
             Viewport.Playfield = playfield;
@@ -29,6 +30,7 @@
                 return false;
             }
             return true;
+        
         }
 
         private void updateLoadedChunks()
@@ -56,7 +58,14 @@
 
         internal void Update()
         {
-            throw new NotImplementedException();
+            updateLoadedChunks();
+            int xLChunksX = (LoadedChunks.Max(x => x.RootCoord.X)) - (LoadedChunks.Min(x => x.RootCoord.X) +2);
+            int xLChunksY = (LoadedChunks.Max(x => x.RootCoord.Y)) - (LoadedChunks.Min(x => x.RootCoord.Y) +2);
+            canvas = new LiveNode[xLChunksX, xLChunksY];
+            foreach (Chunk chunk in LoadedChunks)
+            {
+                
+            }
         }
     }
 }
