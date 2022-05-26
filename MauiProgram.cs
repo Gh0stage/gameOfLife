@@ -19,7 +19,8 @@ public static class MauiProgram
 #if DEBUG
 		builder.Services.AddBlazorWebViewDeveloperTools();
 #endif
-
+		Game game = new Game();
+		Timer timer = new Timer(game.Update,null,0,game.speedModifierDefault*1000);
 		return builder.Build();
 	}
 }

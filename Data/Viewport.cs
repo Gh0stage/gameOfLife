@@ -7,7 +7,7 @@
         public int canvasSizeX = 300;
         public int canvasSizeY = 600;
         public Coordinate viewportCoordLB = new Coordinate(Playfield.chunkGrid[0,0], 0, 0);
-        public Coordinate viewportCoordRA = new Coordinate(null, 0, 0);
+        public Coordinate viewportCoordRA = new Coordinate(null, 0, 0); 
         public LiveNode[,] canvas = new LiveNode[,] { };
 
         
@@ -21,8 +21,15 @@
 
         public void UpdateCanvas()
         {
-            updateLoadedChunks();
+            foreach (Chunk chunk in LoadedChunks)
+            {
+                foreach (LiveNode cell in chunk.GetActiveCells())
+                {
+                    canvas[chunk.RootCoord.X*Chunk.SIZE+cell.Location.X, chunk.RootCoord.Y * Chunk.SIZE + cell.Location.Y] = cell;
+                }
+            }
         }
+        
         public bool cornerCheck(Coordinate point)
         {
             if (point.X < viewportCoordLB.X || point.X > viewportCoordRA.X || point.Y < viewportCoordLB.Y || point.Y > viewportCoordRA.Y)
@@ -62,10 +69,7 @@
             int xLChunksX = (LoadedChunks.Max(x => x.RootCoord.X)) - (LoadedChunks.Min(x => x.RootCoord.X) +2);
             int xLChunksY = (LoadedChunks.Max(x => x.RootCoord.Y)) - (LoadedChunks.Min(x => x.RootCoord.Y) +2);
             canvas = new LiveNode[xLChunksX, xLChunksY];
-            foreach (Chunk chunk in LoadedChunks)
-            {
-                
-            }
+            UpdateCanvas();
         }
     }
 }
